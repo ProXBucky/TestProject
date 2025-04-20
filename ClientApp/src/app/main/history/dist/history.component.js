@@ -18,14 +18,14 @@ var HistoryComponent = /** @class */ (function () {
     HistoryComponent.prototype.ngOnInit = function () {
         var _this = this;
         var clicks = localStorage.getItem('idUser');
-        this.http.post(environment.URL_API+"hoadons/danhsachhoadon/", {
+        this.http.post(environment.URL_API + "hoadons/danhsachhoadon/", {
             idUser: clicks
         }).subscribe(function (res) {
             _this.list_hoadon = res;
         });
         var connection = new signalR.HubConnectionBuilder()
             .configureLogging(signalR.LogLevel.Information)
-            .withUrl('https://localhost:44302/notify')
+            .withUrl('https://localhost:5001/notify')
             .build();
         connection.start().then(function () {
             console.log('SignalR Connected!');
@@ -33,7 +33,7 @@ var HistoryComponent = /** @class */ (function () {
             return console.error(err.toString());
         });
         connection.on("BroadcastMessage", function () {
-            _this.http.post(environment.URL_API+"hoadons/danhsachhoadon/", {
+            _this.http.post(environment.URL_API + "hoadons/danhsachhoadon/", {
                 idUser: clicks
             }).subscribe(function (res) {
                 _this.list_hoadon = res;

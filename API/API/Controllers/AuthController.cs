@@ -97,7 +97,7 @@ namespace API.Controllers
             id = null;
             return Ok();
         }
-        public async Task<IActionResult> UpdateUser([FromBody] CredentialsViewModel credentials)
+        private async Task<IActionResult> UpdateUser([FromBody] CredentialsViewModel credentials)
         {
             if (!ModelState.IsValid)
             {

@@ -20,6 +20,6 @@ export class TaoPhieuNhapDetailComponent implements OnInit {
     )
   }
   exportGeneratePdf() {
-    window.open("https://localhost:44302/api/GeneratePdf/phieunhapdetail/" + this.phieunhapchitietphieunhap.id, "_blank");
+    window.open("https://localhost:5001/api/GeneratePdf/phieunhapdetail/" + this.phieunhapchitietphieunhap.id, "_blank");
   }
 }

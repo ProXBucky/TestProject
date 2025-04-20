@@ -20,55 +20,55 @@ export class CategoriesComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   productList: any[];
-  constructor(public service:CategoryService,
-              public router : Router,
-              public http: HttpClient,
-              public dialog: MatDialog,
-              public toastService: ToastServiceService) { }
-displayedColumns: string[] = ['id', 'ten',
-  'actions'];
-  public category :  Category
+  constructor(public service: CategoryService,
+    public router: Router,
+    public http: HttpClient,
+    public dialog: MatDialog,
+    public toastService: ToastServiceService) { }
+  displayedColumns: string[] = ['id', 'ten',
+    'actions'];
+  public category: Category
   ngOnInit(): void {
     this.service.getAllCategories();
     const connection = new signalR.HubConnectionBuilder()
-    .configureLogging(signalR.LogLevel.Information)
-    .withUrl('https://localhost:44302/notify')
-    .build();
-  connection.start().then(function () {
-    console.log('SignalR Connected!');
-  }).catch(function (err) {
-    return console.error(err.toString());
-  });
-  connection.on("BroadcastMessage", () => {
-    this.service.getAllCategories();
-  });
+      .configureLogging(signalR.LogLevel.Information)
+      .withUrl('https://localhost:5001/notify')
+      .build();
+    connection.start().then(function () {
+      console.log('SignalR Connected!');
+    }).catch(function (err) {
+      return console.error(err.toString());
+    });
+    connection.on("BroadcastMessage", () => {
+      this.service.getAllCategories();
+    });
   }
   ngAfterViewInit(): void {
     this.service.dataSource.sort = this.sort;
     this.service.dataSource.paginator = this.paginator;
   }
-  onModalDialog(){
+  onModalDialog() {
     this.service.category = new Category()
     this.dialog.open(CategoryComponent)
   }
- doFilter = (value: string) => {
-  this.service.dataSource.filter = value.trim().toLocaleLowerCase();
-}
-  populateForm(selectedRecord:Category){
-    this.service.category = Object.assign({},selectedRecord)
+  doFilter = (value: string) => {
+    this.service.dataSource.filter = value.trim().toLocaleLowerCase();
+  }
+  populateForm(selectedRecord: Category) {
+    this.service.category = Object.assign({}, selectedRecord)
     this.dialog.open(CategoryComponent)
+  }
+  clickDelete(id) {
+    if (confirm('Bạn có chắc chắn xóa bản ghi này không ??')) {
+      this.service.delete(id).subscribe(
+        res => {
+          this.toastService.showToastXoaThanhCong()
+          this.service.getAllCategories()
+        },
+        err => {
+          this.toastService.showToastXoaThanhCong()
+        }
+      )
+    }
+  }
 }
-  clickDelete(id){
-  if(confirm('Bạn có chắc chắn xóa bản ghi này không ??'))
-  {
-    this.service.delete(id).subscribe(
-      res=>{
-        this.toastService.showToastXoaThanhCong()
-        this.service.getAllCategories()
-      },
-      err=>{
-        this.toastService.showToastXoaThanhCong()
-      }
-    )
-}
-}}

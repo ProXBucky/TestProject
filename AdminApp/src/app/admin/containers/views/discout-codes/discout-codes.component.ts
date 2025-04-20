@@ -19,54 +19,54 @@ import * as signalR from '@microsoft/signalr';
 export class DiscoutCodesComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  constructor(public service:DiscountCodeService,
-              public router : Router,
-              public http: HttpClient,
-              public dialog: MatDialog,
-              public toastService: ToastServiceService) { }
-displayedColumns: string[] = ['id', 'code','sotiengiam',
-  'actions'];
+  constructor(public service: DiscountCodeService,
+    public router: Router,
+    public http: HttpClient,
+    public dialog: MatDialog,
+    public toastService: ToastServiceService) { }
+  displayedColumns: string[] = ['id', 'code', 'sotiengiam',
+    'actions'];
   ngOnInit(): void {
     this.service.getAllMaGiamGias();
     const connection = new signalR.HubConnectionBuilder()
-    .configureLogging(signalR.LogLevel.Information)
-    .withUrl('https://localhost:44302/notify')
-    .build();
-  connection.start().then(function () {
-    console.log('SignalR Connected!');
-  }).catch(function (err) {
-    return console.error(err.toString());
-  });
-  connection.on("BroadcastMessage", () => {
-    this.service.getAllMaGiamGias();
-  });
+      .configureLogging(signalR.LogLevel.Information)
+      .withUrl('https://localhost:5001/notify')
+      .build();
+    connection.start().then(function () {
+      console.log('SignalR Connected!');
+    }).catch(function (err) {
+      return console.error(err.toString());
+    });
+    connection.on("BroadcastMessage", () => {
+      this.service.getAllMaGiamGias();
+    });
   }
   ngAfterViewInit(): void {
     this.service.dataSource.sort = this.sort;
     this.service.dataSource.paginator = this.paginator;
   }
-  onModalDialog(){
+  onModalDialog() {
     this.service.magiamgia = new DiscountCode()
     this.dialog.open(DiscoutCodeComponent)
   }
- doFilter = (value: string) => {
-  this.service.dataSource.filter = value.trim().toLocaleLowerCase();
-}
-  populateForm(selectedRecord: DiscountCode){
-    this.service.magiamgia = Object.assign({},selectedRecord)
+  doFilter = (value: string) => {
+    this.service.dataSource.filter = value.trim().toLocaleLowerCase();
+  }
+  populateForm(selectedRecord: DiscountCode) {
+    this.service.magiamgia = Object.assign({}, selectedRecord)
     this.dialog.open(DiscoutCodeComponent)
+  }
+  clickDelete(id) {
+    if (confirm('Bạn có chắc chắn xóa bản ghi này không ??')) {
+      this.service.delete(id).subscribe(
+        res => {
+          this.toastService.showToastXoaThanhCong()
+          this.service.getAllMaGiamGias()
+        },
+        err => {
+          this.toastService.showToastXoaThanhCong()
+        }
+      )
+    }
+  }
 }
-  clickDelete(id){
-  if(confirm('Bạn có chắc chắn xóa bản ghi này không ??'))
-  {
-    this.service.delete(id).subscribe(
-      res=>{
-        this.toastService.showToastXoaThanhCong()
-        this.service.getAllMaGiamGias()
-      },
-      err=>{
-        this.toastService.showToastXoaThanhCong()
-      }
-    )
-}
-}}

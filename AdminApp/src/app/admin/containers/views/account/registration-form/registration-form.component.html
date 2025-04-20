@@ -26,7 +26,7 @@
         <div *ngIf="errors" class="alert alert-danger" role="alert">
             <strong>Oops!</strong> {{errors}}
         </div>
-        <div class="auth">
+        <!-- <div class="auth">
             Or login with</div>
         <div class="links">
             <div class="facebook">
@@ -35,9 +35,9 @@
             <div class="google">
                 <i class="fab fa-google-plus-square"><span>Google</span></i>
             </div>
-        </div>
+        </div> -->
         <div class="signup" style="cursor: pointer">
-            Not a member? <a (click)="onRegister()">Register now</a>
+            <a (click)="onRegister()">Login now</a>
         </div>
     </div>
 </div>

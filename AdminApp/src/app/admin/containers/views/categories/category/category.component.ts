@@ -5,56 +5,67 @@ import { environment } from '../../../../../../environments/environment';
 import { ToastServiceService } from '../../../shared/toast-service.service';
 import { CategoriesComponent } from '../categories.component';
 import { CategoryService } from '../category.service';
+
+import { AbstractControl, ValidationErrors } from '@angular/forms';
+
+export function noWhitespaceValidator(control: AbstractControl): ValidationErrors | null {
+  const isWhitespace = (control.value || '').trim().length === 0;
+  return isWhitespace ? { whitespace: true } : null;
+}
 @Component({
   selector: 'app-category',
   templateUrl: './category.component.html',
   styleUrls: ['./category.component.scss']
 })
 export class CategoryComponent implements OnInit {
-  constructor(public service : CategoryService,
+  constructor(public service: CategoryService,
     public toastService: ToastServiceService,
-    public http :HttpClient ,
+    public http: HttpClient,
   ) {
-   }
-   get name() { return this.newFormGroup.get('Name'); }
-ngOnInit(): void {
-this.newFormGroup = new FormGroup({
-Name: new FormControl("",
-  [
-    Validators.required,
-  ]),
-});
-}
-public newFormGroup: FormGroup;
-onSubmit=(data) =>{
-if(this.service.category.id==0){
-const formData = new FormData();
-formData.append('Name', data.Name);
-formData.append('NamNu', data.NamNu);
-this.http.post(environment.URL_API+'loais', formData)
-.subscribe(res => {
-  this.toastService.showToastThemThanhCong();
-this.service.getAllCategories();
-this.service.category.id=0;
-},err=>{
-  this.toastService.showToastThemThatBai()
-});
-this.newFormGroup.reset();
-}
-else
-{
-const formData = new FormData();
-formData.append('Name', data.Name);
-formData.append('NamNu', data.NamNu);
-this.http.put(environment.URL_API+'loais/'+`${this.service.category.id}`, formData)
-.subscribe(res=>{
-  this.toastService.showToastSuaThanhCong();
-  this.service.getAllCategories();
-this.service.category.id=0;
-},
-error=>{
-  this.toastService.showToastXoaThatBai()
-});
-}
-}
+  }
+  get name() { return this.newFormGroup.get('Name'); }
+  ngOnInit(): void {
+    this.newFormGroup = new FormGroup({
+      Name: new FormControl(
+        '',
+        [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(50),
+          noWhitespaceValidator // ← thêm validator này
+        ]
+      )
+    });
+  }
+  public newFormGroup: FormGroup;
+  onSubmit = (data) => {
+    if (this.service.category.id == 0) {
+      const formData = new FormData();
+      formData.append('Name', data.Name);
+      formData.append('NamNu', data.NamNu);
+      this.http.post(environment.URL_API + 'loais', formData)
+        .subscribe(res => {
+          this.toastService.showToastThemThanhCong();
+          this.service.getAllCategories();
+          this.service.category.id = 0;
+        }, err => {
+          this.toastService.showToastThemThatBai()
+        });
+      this.newFormGroup.reset();
+    }
+    else {
+      const formData = new FormData();
+      formData.append('Name', data.Name);
+      formData.append('NamNu', data.NamNu);
+      this.http.put(environment.URL_API + 'loais/' + `${this.service.category.id}`, formData)
+        .subscribe(res => {
+          this.toastService.showToastSuaThanhCong();
+          this.service.getAllCategories();
+          this.service.category.id = 0;
+        },
+          error => {
+            this.toastService.showToastXoaThatBai()
+          });
+    }
+  }
 }

@@ -22,7 +22,7 @@ export class TaoPhieuNhapsComponent implements OnInit, AfterViewInit {
     public http: HttpClient,
     public dialog: MatDialog,
     public serviceToast: ToastServiceService
-  ) {}
+  ) { }
   displayedColumns: string[] = [
     "id",
     "soChungTu",
@@ -36,7 +36,7 @@ export class TaoPhieuNhapsComponent implements OnInit, AfterViewInit {
     this.service.getAllPhieuNhaps();
     const connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
-      .withUrl("https://localhost:44302/notify")
+      .withUrl("https://localhost:5001/notify")
       .build();
     connection
       .start()
@@ -62,7 +62,7 @@ export class TaoPhieuNhapsComponent implements OnInit, AfterViewInit {
     this.router.navigate(["admin/taophieunhap/them"]);
   }
   exportGeneratePdf() {
-    window.open("https://localhost:44302/api/GeneratePdf/allphieunhap", "_blank");
+    window.open("https://localhost:5001/api/GeneratePdf/allphieunhap", "_blank");
   }
   populateForm(id: any) {
     this.service.idphieunhap = id;

@@ -26,10 +26,13 @@
                     <tr>
                         <td style="width: 50%;" class="text-left"> <b>Mã hoá đơn:</b> #{{bill.id}}
                             <br>
-                            <b>Ngày mua:</b> {{bill.ngayTao|date: 'dd/MM/yyyy HH:mm'}}</td>
-                        <td style="width: 50%;" class="text-left"> <b>Phương thức thanh toán:</b> Thanh toán khi nhận hàng
+                            <b>Ngày mua:</b> {{bill.ngayTao|date: 'dd/MM/yyyy HH:mm'}}
+                        </td>
+                        <td style="width: 50%;" class="text-left"> <b>Phương thức thanh toán:</b> Thanh toán khi nhận
+                            hàng
                             <br>
-                            <b>Vận chuyển:</b> </td>
+                            <b>Vận chuyển:</b>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -46,11 +49,12 @@
                             <br><span>{{bill.user.firstName}} {{bill.user.lastName}}</span>,
                             <br>{{bill.user.diaChi}},
                             <br>{{bill.user.sdt}}
-                            <td class="text-left">{{bill.diaChi}}
-                                <br>{{bill.xa}},
-                                <br>{{bill.huyen}},
-                                <br>{{bill.tinh}},
-                                <br>{{bill.ghiChu}}</td>
+                        <td class="text-left">{{bill.diaChi}}
+                            <br>{{bill.xa}},
+                            <br>{{bill.huyen}},
+                            <br>{{bill.tinh}},
+                            <br>{{bill.ghiChu}}
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -69,7 +73,7 @@
                             <td class="text-left">{{item.sanPham.ten}} </td>
                             <td class="text-right">{{item.soluong}}</td>
                             <td class="text-right">{{item.giaBan|number}}</td>
-                            <td class="text-right">{{item.soluong*item.gia|number}}</td>
+                            <td class="text-right">{{item.soluong*item.giaBan|number}}</td>
                         </tr>
                     </tbody>
                     <tfoot>
@@ -101,9 +105,11 @@
                 </table>
             </div>
             <div class="buttons clearfix" style="padding-bottom: 20px;">
-                <div class="pull-right" style="padding-left: 20px;"><a class="btn btn-primary" [routerLink]="'/history'">Trở về</a>
+                <div class="pull-right" style="padding-left: 20px;"><a class="btn btn-primary"
+                        [routerLink]="'/history'">Trở về</a>
                 </div>
-                <div *ngIf="bill.trangThai!=1" class="pull-right"><a class="btn btn-primary" (click)="Huy()">Huỷ đơn</a>
+                <div *ngIf="bill.trangThai === 0 || bill.trangThai === 1" class="pull-right">
+                    <a class="btn btn-primary" (click)="Huy()">Huỷ đơn</a>
                 </div>
             </div>
         </div>

@@ -74,7 +74,7 @@ namespace API
             {
                 options.AddPolicy("ApiUser", policy => policy.RequireClaim(Constants.Strings.JwtClaimIdentifiers.Rol, Constants.Strings.JwtClaims.ApiAccess));
             });
-            services.AddWkhtmltopdf("wkhtmltopdf");
+            //services.AddWkhtmltopdf("wkhtmltopdf");
             services.AddIdentity<AppUser, IdentityRole>
                 (o =>
                 {

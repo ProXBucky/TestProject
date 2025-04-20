@@ -7,7 +7,7 @@ import { MatSort } from '@angular/material/sort';
 import { Data, Router } from '@angular/router';
 import { ToastServiceService } from '../../shared/toast-service.service';
 import { HoaDonComponent } from './hoa-don/hoa-don.component';
-import {  HoaDonUser, HoaDonService } from './hoadon.service';
+import { HoaDonUser, HoaDonService } from './hoadon.service';
 import * as signalR from '@microsoft/signalr';
 import { HoaDonEditComponent } from './hoa-don-edit/hoa-don-edit.component';
 @Component({
@@ -26,12 +26,12 @@ export class HoaDonsComponent implements OnInit {
     public serviceToast: ToastServiceService,
     public datepipe: DatePipe
   ) { }
-  displayedColumns: string[] = ['id', 'id_User', 'ngayTao', 'ghiChi', 'tongTien','trangThai','actions'];
+  displayedColumns: string[] = ['id', 'id_User', 'ngayTao', 'ghiChi', 'tongTien', 'trangThai', 'actions'];
   ngOnInit(): void {
     this.service.getAllHoaDons();
     const connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
-      .withUrl('https://localhost:44302/notify')
+      .withUrl('https://localhost:5001/notify')
       .build();
     connection.start().then(function () {
       console.log('SignalR Connected!');
@@ -61,9 +61,9 @@ export class HoaDonsComponent implements OnInit {
   populateForm(selectedRecord: HoaDonUser) {
     this.service.hoadon = Object.assign({}, selectedRecord)
     this.dialog.open(HoaDonEditComponent)
-  } 
+  }
   exportGeneratePdf() {
-    window.open("https://localhost:44302/api/GeneratePdf/allorder", "_blank");
+    window.open("https://localhost:5001/api/GeneratePdf/allorder", "_blank");
   }
   clickDelete(id) {
     if (confirm('Bạn có chắc chắn xóa bản ghi này không ??')) {

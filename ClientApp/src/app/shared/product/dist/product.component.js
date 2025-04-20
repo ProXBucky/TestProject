@@ -18,19 +18,19 @@ var ProductComponent = /** @class */ (function () {
         this.chose_gia = 1;
         this.chose_mau = 1;
         this.http
-            .get('https://localhost:44302/api/mausacs/mausac/', {}).subscribe(function (resp) {
-            _this.mausac = resp;
-        });
+            .get('https://localhost:5001/api/mausacs/mausac/', {}).subscribe(function (resp) {
+                _this.mausac = resp;
+            });
         this.http
-            .get('https://localhost:44302/api/sanphams/laytatcasanpham', {}).subscribe(function (resp) {
-            _this.list_product = resp;
-            _this.list_product_male = _this.list_product.filter(function (d) { return d.gioiTinh == 1; });
-            _this.list_product_female = _this.list_product.filter(function (d) { return d.gioiTinh == 2; });
-        });
+            .get('https://localhost:5001/api/sanphams/laytatcasanpham', {}).subscribe(function (resp) {
+                _this.list_product = resp;
+                _this.list_product_male = _this.list_product.filter(function (d) { return d.gioiTinh == 1; });
+                _this.list_product_female = _this.list_product.filter(function (d) { return d.gioiTinh == 2; });
+            });
         this.http
-            .get('https://localhost:44302/api/sanphams/topsanphammoi', {}).subscribe(function (resp) {
-            _this.products = resp;
-        });
+            .get('https://localhost:5001/api/sanphams/topsanphammoi', {}).subscribe(function (resp) {
+                _this.products = resp;
+            });
         this.responsiveOptions = [
             {
                 breakpoint: '1024px',
@@ -55,45 +55,45 @@ var ProductComponent = /** @class */ (function () {
         var _this = this;
         var clicks = localStorage.getItem('idUser');
         this.http
-            .post('https://localhost:44302/api/sanphams/like/', {
-            IdSanPham: idSanPham,
-            IdUser: clicks
-        }).subscribe(function (resp) {
-            if (resp == 1) {
-                _this.list_product.filter(function (d) { return d.id == idSanPham; })[0].like == 1;
-                sweetalert2_1["default"].fire("Sản phẩm được thêm vào danh sách yêu thích", '', 'success');
-            }
-            if (resp == 2) {
-                _this.list_product.filter(function (d) { return d.id == idSanPham; })[0].like == null;
-                sweetalert2_1["default"].fire("Sản phẩm được xoá khỏi danh sách yêu thích", '', 'success');
-            }
-        });
+            .post('https://localhost:5001/api/sanphams/like/', {
+                IdSanPham: idSanPham,
+                IdUser: clicks
+            }).subscribe(function (resp) {
+                if (resp == 1) {
+                    _this.list_product.filter(function (d) { return d.id == idSanPham; })[0].like == 1;
+                    sweetalert2_1["default"].fire("Sản phẩm được thêm vào danh sách yêu thích", '', 'success');
+                }
+                if (resp == 2) {
+                    _this.list_product.filter(function (d) { return d.id == idSanPham; })[0].like == null;
+                    sweetalert2_1["default"].fire("Sản phẩm được xoá khỏi danh sách yêu thích", '', 'success');
+                }
+            });
         this.cart.addToLove(this.list_product.filter(function (d) { return d.id == idSanPham; })[0]);
     };
     ProductComponent.prototype.searchTheoGia = function (thap, cao, choser) {
         var _this = this;
         this.http
-            .post('https://localhost:44302/api/sanphams/sapxepsanpham', {
-            Thap: thap,
-            Cao: cao
-        }).subscribe(function (resp) {
-            _this.list_product = resp;
-            _this.list_product_male = _this.list_product.filter(function (d) { return d.gioiTinh == 1; });
-            _this.list_product_female = _this.list_product.filter(function (d) { return d.gioiTinh == 2; });
-            _this.chose_gia = choser;
-        });
+            .post('https://localhost:5001/api/sanphams/sapxepsanpham', {
+                Thap: thap,
+                Cao: cao
+            }).subscribe(function (resp) {
+                _this.list_product = resp;
+                _this.list_product_male = _this.list_product.filter(function (d) { return d.gioiTinh == 1; });
+                _this.list_product_female = _this.list_product.filter(function (d) { return d.gioiTinh == 2; });
+                _this.chose_gia = choser;
+            });
     };
     ProductComponent.prototype.searchthemau = function (mausac, chose) {
         var _this = this;
         this.http
-            .post('https://localhost:44302/api/sanphams/searchtheomau', {
-            mausac: mausac
-        }).subscribe(function (resp) {
-            _this.list_product = resp;
-            _this.list_product_male = _this.list_product.filter(function (d) { return d.gioiTinh == 1; });
-            _this.list_product_female = _this.list_product.filter(function (d) { return d.gioiTinh == 2; });
-            _this.chose_mau = chose;
-        });
+            .post('https://localhost:5001/api/sanphams/searchtheomau', {
+                mausac: mausac
+            }).subscribe(function (resp) {
+                _this.list_product = resp;
+                _this.list_product_male = _this.list_product.filter(function (d) { return d.gioiTinh == 1; });
+                _this.list_product_female = _this.list_product.filter(function (d) { return d.gioiTinh == 2; });
+                _this.chose_mau = chose;
+            });
     };
     ProductComponent.prototype.onSearchChange = function (searchValue) {
         this.list_product.filter(function (d) { return d.ten; });
@@ -102,12 +102,12 @@ var ProductComponent = /** @class */ (function () {
         var kq;
         var clicks = localStorage.getItem('idUser');
         this.http
-            .post('https://localhost:44302/api/sanphams/checklike/', {
-            IdSanPham: idSanPham,
-            IdUser: clicks
-        }).subscribe(function (resp) {
-            kq = resp;
-        });
+            .post('https://localhost:5001/api/sanphams/checklike/', {
+                IdSanPham: idSanPham,
+                IdUser: clicks
+            }).subscribe(function (resp) {
+                kq = resp;
+            });
         return kq;
     };
     ProductComponent.prototype.ngAfterViewInit = function () {

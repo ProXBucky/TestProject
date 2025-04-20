@@ -42,24 +42,24 @@ export class ProductsComponent implements OnInit, AfterViewInit {
     'comment',
     'toggle',
     'actions'
-     ];
-  updateActiveStatus(element:Product) {
-    console.log("element là: ",element);
-      console.log("element.trangThaiHoatDong là: ",element.trangThaiHoatDong);
-      this.service.putHoatDong(element.id,element).subscribe(
-        result=>{
-          this.service.getAllProducts()
-        },
-        error=>{
-          console.log(error);
-        }
-      )
-    }
+  ];
+  updateActiveStatus(element: Product) {
+    console.log("element là: ", element);
+    console.log("element.trangThaiHoatDong là: ", element.trangThaiHoatDong);
+    this.service.putHoatDong(element.id, element).subscribe(
+      result => {
+        this.service.getAllProducts()
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
   ngOnInit() {
     this.service.getAllProducts();
     const connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
-      .withUrl('https://localhost:44302/notify')
+      .withUrl('https://localhost:5001/notify')
       .build();
     connection.start().then(function () {
       console.log('SignalR Connected!');
@@ -85,7 +85,7 @@ export class ProductsComponent implements OnInit, AfterViewInit {
     this.router.navigate(['admin/product/detail/' + this.service.product.id]);
   }
   exportGeneratePdf() {
-    window.open("https://localhost:44302/api/GeneratePdf/allsanpham", "_blank");
+    window.open("https://localhost:5001/api/GeneratePdf/allsanpham", "_blank");
   }
   onSelectedEdit() {
     this.router.navigate(['admin/product/edit/' + this.service.product.id]);

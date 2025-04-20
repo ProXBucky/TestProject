@@ -30,7 +30,7 @@ export class NhaCungCapsComponent implements OnInit, AfterViewInit {
     this.service.getAllNhaCungCaps();
     const connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
-      .withUrl('https://localhost:44302/notify')
+      .withUrl('https://localhost:5001/notify')
       .build();
     connection.start().then(function () {
       console.log('SignalR Connected!');
