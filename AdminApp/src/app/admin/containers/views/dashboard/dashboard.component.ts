@@ -36,7 +36,7 @@ export class DashboardComponent implements OnInit {
     this.getTopDataSetBanRaTonKho();
     const connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
-      .withUrl('https://localhost:44302/notify')
+      .withUrl('https://localhost:5001/notify')
       .build();
     connection.start().then(function () {
       console.log('SignalR Connected!');
@@ -63,8 +63,8 @@ export class DashboardComponent implements OnInit {
   selectedSlice = 'none';
   chart: any;
   lineChartData: ChartDataSets[] = [
-    { data: [], label: 'Giá trị sản phẩm tồn (giá mua * số lượng tồn)', backgroundColor: 'rgb(0,0,255)',borderWidth:0.2 },
-    { data: [], label: 'Giá trị sản phẩm bán ra (giá bán * số lượng trong chi tiết đơn hàng)', backgroundColor: 'rgb(250,255,65)',borderWidth:0.2 },
+    { data: [], label: 'Giá trị sản phẩm tồn (giá mua * số lượng tồn)', backgroundColor: 'rgb(0,0,255)', borderWidth: 0.2 },
+    { data: [], label: 'Giá trị sản phẩm bán ra (giá bán * số lượng trong chi tiết đơn hàng)', backgroundColor: 'rgb(250,255,65)', borderWidth: 0.2 },
   ];
   lineChartLabels: Label[] = [];
   lineChartOptions = {
@@ -138,5 +138,5 @@ export class DashboardComponent implements OnInit {
       error => {
         this.errorMessage = error as any
       })
-    }
   }
+}

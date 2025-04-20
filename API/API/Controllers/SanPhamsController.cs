@@ -76,7 +76,7 @@ namespace API.Controllers
                     ten = _context.SanPhams.Where(s => s.Id == d.IdSanPham).Select(s => s.Ten).FirstOrDefault(),
                     gia = (decimal)_context.SanPhams.Where(s => s.Id == d.IdSanPham).Select(s => s.GiaBan).FirstOrDefault(),
                 });
-            return Json(await  resuft.ToListAsync());
+            return Json(await resuft.ToListAsync());
         }
         [HttpPost("deletelike/{id}")]
         public async Task<ActionResult> DeleteLike(int id)
@@ -237,13 +237,13 @@ namespace API.Controllers
             var imageSanPhams = _context.ImageSanPhams.ToArray().Where(s => s.IdSanPham == id);
             foreach (var i in imageSanPhams)
             {
-               FileHelper.DeleteFileOnTypeAndNameAsync("product", i.ImageName);
+                FileHelper.DeleteFileOnTypeAndNameAsync("product", i.ImageName);
             }
             if (upload.files != null)
             {
                 for (int i = 0; i < file.Length; i++)
                 {
-                    if (file[i].Length > 0 && file[i].Length< 5120)
+                    if (file[i].Length > 0 && file[i].Length < 5120)
                     {
                         listImage.Add(new ImageSanPham()
                         {
@@ -326,7 +326,7 @@ namespace API.Controllers
             var imageSanPhams = _context.ImageSanPhams.ToArray().Where(s => s.IdSanPham == id);
             foreach (var i in imageSanPhams)
             {
-                FileHelper.DeleteFileOnTypeAndNameAsync("product",i.ImageName);
+                FileHelper.DeleteFileOnTypeAndNameAsync("product", i.ImageName);
             }
             Models.SanPhamBienThe[] spbts;
             spbts = _context.SanPhamBienThes.Where(s => s.Id_SanPham == id).ToArray();
@@ -389,21 +389,24 @@ namespace API.Controllers
             ProductDetail pr;
             List<ImageSanPham> listImage;
             listImage = await _context.ImageSanPhams.Where(s => s.IdSanPham == id).ToListAsync();
+            Console.WriteLine($"📸 Tìm thấy {listImage.Count} ảnh cho sản phẩm Id = {id}");
             List<SanPhamBienTheMauSize> listSPBT;
             var temp = from s in _context.SanPhamBienThes
-                      join z in _context.Sizes
-                      on s.SizeId equals z.Id
-                      join m in _context.MauSacs
-                      on s.Id_Mau equals m.Id
-                      select new SanPhamBienTheMauSize()
-                      {
-                          Id = s.Id,
-                          SoLuongTon = s.SoLuongTon,
-                          TenMau = m.MaMau,
-                          TenSize = z.TenSize,
-                          Id_SanPham = s.Id_SanPham,
-                      };
+                       join z in _context.Sizes
+                       on s.SizeId equals z.Id
+                       join m in _context.MauSacs
+                       on s.Id_Mau equals m.Id
+                       select new SanPhamBienTheMauSize()
+                       {
+                           Id = s.Id,
+                           SoLuongTon = s.SoLuongTon,
+                           TenMau = m.MaMau,
+                           TenSize = z.TenSize,
+                           Id_SanPham = s.Id_SanPham,
+                       };
             listSPBT = await temp.Where(s => s.Id_SanPham == id).ToListAsync();
+            Console.WriteLine($"🔄 Tìm thấy {listSPBT.Count} biến thể cho sản phẩm Id = {id}");
+
             var kb = from s in _context.SanPhams
                      join spbt in _context.SanPhamBienThes
                      on s.Id equals spbt.Id_SanPham
@@ -423,7 +426,7 @@ namespace API.Controllers
                          Tag = s.Tag,
                          KhuyenMai = s.KhuyenMai,
                          MoTa = s.MoTa,
-                         GioiTinh=s.GioiTinh,
+                         GioiTinh = s.GioiTinh,
                          HuongDan = s.HuongDan,
                          TenNhaCungCap = ncc.Ten,
                          ThanhPhan = s.ThanhPhan,
@@ -436,13 +439,16 @@ namespace API.Controllers
                          ImageSanPhams = listImage,
                          SanPhamBienThes = listSPBT,
                      };
+            var productList = kb.Where(s => s.Id == id).ToList();
+            Console.WriteLine($"🛍️ Tìm thấy {productList.Count} sản phẩm với Id = {id}");
+
             pr = kb.FirstOrDefault(s => s.Id == id);
             return pr;
         }
         [HttpGet("topsanphammoi")]
         public async Task<ActionResult<IEnumerable<SanPhamLoaiThuongHieu>>> DanhSachHangMoi()
         {
-            var kb =  _context.SanPhams.Select(
+            var kb = _context.SanPhams.Select(
                    s => new SanPhamLoaiThuongHieu()
                    {
                        Id = s.Id,
@@ -454,14 +460,14 @@ namespace API.Controllers
                        HuongDan = s.HuongDan,
                        GioiTinh = s.GioiTinh,
                        ThanhPhan = s.ThanhPhan,
-                       TrangThaiSanPham = s.TrangThaiSanPham,                   
+                       TrangThaiSanPham = s.TrangThaiSanPham,
                        TrangThaiHoatDong = s.TrangThaiHoatDong,
                        Id_Loai = s.Id_Loai,
                        Id_NhanHieu = s.Id_NhanHieu,
                        TenLoai = _context.Loais.Where(d => d.Id == s.Id_Loai).Select(d => d.Ten).FirstOrDefault(),
                        TenNhanHieu = _context.NhanHieus.Where(d => d.Id == s.Id_NhanHieu).Select(d => d.Ten).FirstOrDefault(),
                        Image = _context.ImageSanPhams.Where(q => q.IdSanPham == s.Id).Select(q => q.ImageName).FirstOrDefault(),
-                   }).Take(20).Where(s=>s.TrangThaiSanPham=="new"&&s.TrangThaiHoatDong==true);
+                   }).Take(20).Where(s => s.TrangThaiSanPham == "new" && s.TrangThaiHoatDong == true);
             return await kb.ToListAsync();
         }
         [HttpPost("sapxepsanpham")]

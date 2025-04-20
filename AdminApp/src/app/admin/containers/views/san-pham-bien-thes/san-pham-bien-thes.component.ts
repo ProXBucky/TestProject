@@ -17,55 +17,55 @@ export class SanPhamBienThesComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   productList: any[];
-  constructor(public service:SanPhamBienTheService,
-              public router : Router,
-              public http: HttpClient,
-              public dialog: MatDialog,
-              public serviceToast : ToastServiceService,) { }
-              displayedColumns: string[] = ['id','sanPham','mauLoai','sizeLoai','soLuongTon',
-  'actions'];
-  public sanphambienthe :  GiaSanPhamMauSacSanPhamSize
+  constructor(public service: SanPhamBienTheService,
+    public router: Router,
+    public http: HttpClient,
+    public dialog: MatDialog,
+    public serviceToast: ToastServiceService,) { }
+  displayedColumns: string[] = ['id', 'sanPham', 'mauLoai', 'sizeLoai', 'soLuongTon',
+    'actions'];
+  public sanphambienthe: GiaSanPhamMauSacSanPhamSize
   ngOnInit(): void {
     this.service.getAllGiaSanPhamMauSacSanPhamSizes();
     const connection = new signalR.HubConnectionBuilder()
-    .configureLogging(signalR.LogLevel.Information)
-    .withUrl('https://localhost:44302/notify')
-    .build();
-  connection.start().then(function () {
-    console.log('SignalR Connected!');
-  }).catch(function (err) {
-    return console.error(err.toString());
-  });
-  connection.on("BroadcastMessage", () => {
-    this.service.getAllGiaSanPhamMauSacSanPhamSizes();
-  });
+      .configureLogging(signalR.LogLevel.Information)
+      .withUrl('https://localhost:5001/notify')
+      .build();
+    connection.start().then(function () {
+      console.log('SignalR Connected!');
+    }).catch(function (err) {
+      return console.error(err.toString());
+    });
+    connection.on("BroadcastMessage", () => {
+      this.service.getAllGiaSanPhamMauSacSanPhamSizes();
+    });
   }
   ngAfterViewInit(): void {
     this.service.dataSource.sort = this.sort;
     this.service.dataSource.paginator = this.paginator;
   }
-  onModalDialog(){
+  onModalDialog() {
     this.service.sanphambienthe = new GiaSanPhamMauSacSanPhamSize()
     this.dialog.open(SanPhamBienTheComponent)
   }
- doFilter = (value: string) => {
-  this.service.dataSource.filter = value.trim().toLocaleLowerCase();
-}
-  populateForm(selectedRecord:GiaSanPhamMauSacSanPhamSize){
-    this.service.sanphambienthe = Object.assign({},selectedRecord)
+  doFilter = (value: string) => {
+    this.service.dataSource.filter = value.trim().toLocaleLowerCase();
+  }
+  populateForm(selectedRecord: GiaSanPhamMauSacSanPhamSize) {
+    this.service.sanphambienthe = Object.assign({}, selectedRecord)
     this.dialog.open(SanPhamBienTheComponent)
+  }
+  clickDelete(id) {
+    if (confirm('Bạn có chắc chắn xóa bản ghi này không ??')) {
+      this.service.delete(id).subscribe(
+        res => {
+          this.serviceToast.showToastXoaThanhCong()
+          this.service.getAllGiaSanPhamMauSacSanPhamSizes()
+        },
+        err => {
+          this.serviceToast.showToastXoaThatBai()
+        }
+      )
+    }
+  }
 }
-  clickDelete(id){
-  if(confirm('Bạn có chắc chắn xóa bản ghi này không ??'))
-  {
-    this.service.delete(id).subscribe(
-      res=>{
-        this.serviceToast.showToastXoaThanhCong()
-        this.service.getAllGiaSanPhamMauSacSanPhamSizes()
-      },
-      err=>{
-        this.serviceToast.showToastXoaThatBai()
-      }
-    )
-}
-}}

@@ -17,7 +17,7 @@ export class ChartSecondComponent implements OnInit {
   doanhthucaonhat: any;
   nam2021soluong: any;
   soLuongTon: any;
-  constructor(public service:ChartSecondService,    public dialog: MatDialog,
+  constructor(public service: ChartSecondService, public dialog: MatDialog,
     public zone: NgZone) {
     this.dataSourceBrand = {
       "chart": {
@@ -110,7 +110,7 @@ export class ChartSecondComponent implements OnInit {
       { label: "", value: "" },
       { label: "", value: "" },
     ]
-   }
+  }
   ngOnInit(): void {
     this.getTop10SanPhamLoiNhats()
     this.getSoLanXuatHienTrongDonHang()
@@ -119,14 +119,14 @@ export class ChartSecondComponent implements OnInit {
     this.getSoLuongTrongNam();
     this.getTopNhanHieu();
     const connection = new signalR.HubConnectionBuilder()
-    .configureLogging(signalR.LogLevel.Information)
-    .withUrl('https://localhost:44302/notify')
-    .build();
-  connection.start().then(function () {
-    console.log('SignalR Connected!');
-  }).catch(function (err) {
-    return console.error(err.toString());
-  });
+      .configureLogging(signalR.LogLevel.Information)
+      .withUrl('https://localhost:5001/notify')
+      .build();
+    connection.start().then(function () {
+      console.log('SignalR Connected!');
+    }).catch(function (err) {
+      return console.error(err.toString());
+    });
     connection.on("BroadcastMessage", () => {
       this.getSoLanXuatHienTrongDonHang()
     });

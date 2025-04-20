@@ -75,7 +75,8 @@
                 {{item.ten}}
             </td>
             <td *ngIf="item.hinh">
-                <img src="https://localhost:44302/Images/list-image-product/{{item.hinh}}" class="rounded mb-3" width="80">
+                <img src="https://localhost:5001/Images/list-image-product/{{item.hinh}}" class="rounded mb-3"
+                    width="80">
             </td>
             <td *ngIf="item.size">
                 {{item.size}}
@@ -93,7 +94,8 @@
                 {{item.thanhTien}}
             </td>
         </tr>
-        <h4 style="font-weight: bold; text-underline-position: auto;" *ngIf="this.hd.hoaDon.tongTien">Tổng tiền: {{this.hd.hoaDon.tongTien}} VNĐ</h4>
+        <h4 style="font-weight: bold; text-underline-position: auto;" *ngIf="this.hd.hoaDon.tongTien">Tổng tiền:
+            {{this.hd.hoaDon.tongTien}} VNĐ</h4>
     </tbody>
 </table>
 <!-- <button mat-button color="accent" style="float: left;" (click)="onModalDialog()">

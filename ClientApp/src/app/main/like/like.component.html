@@ -5,7 +5,7 @@
             Trang chủ
             <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
         </a>
-        <a href="product.html" class="stext-109 cl8 hov-cl1 trans-04">
+        <a href="/like" class="stext-109 cl8 hov-cl1 trans-04">
             Danh sách sản phẩm yêu thích
             <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
         </a>
@@ -24,7 +24,7 @@
             <tbody>
                 <tr *ngFor="let item of list_sanphamyeuthich">
                     <td class="text-left">{{item.ten}} </td>
-                    <td class="text-right">{{item.giaBan|number}}</td>
+                    <td class="text-right">{{item.gia|number}}</td>
                     <td><button (click)="deleteSanPham(item)"><mat-icon>delete</mat-icon></button></td>
                 </tr>
             </tbody>

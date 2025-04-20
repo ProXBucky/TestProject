@@ -21,63 +21,63 @@ export class BrandsComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   productList: any[];
-  constructor(public service:BrandService,
-              public router : Router,
-              public http: HttpClient,
-              public dialog: MatDialog,
-              public toastr: ToastrService,
-              notifierService: NotifierService) {  this.notifier = notifierService; }
-displayedColumns: string[] = ['id', 'ten',
-  'actions'];
-  public brand :  Brand
+  constructor(public service: BrandService,
+    public router: Router,
+    public http: HttpClient,
+    public dialog: MatDialog,
+    public toastr: ToastrService,
+    notifierService: NotifierService) { this.notifier = notifierService; }
+  displayedColumns: string[] = ['id', 'ten',
+    'actions'];
+  public brand: Brand
   ngOnInit(): void {
     this.service.getAllBrands();
     const connection = new signalR.HubConnectionBuilder()
-    .configureLogging(signalR.LogLevel.Information)
-    .withUrl('https://localhost:44302/notify')
-    .build();
-  connection.start().then(function () {
-    console.log('SignalR Connected!');
-  }).catch(function (err) {
-    return console.error(err.toString());
-  });
-  connection.on("BroadcastMessage", () => {
-    this.service.getAllBrands();
-  });
+      .configureLogging(signalR.LogLevel.Information)
+      .withUrl('https://localhost:5001/notify')
+      .build();
+    connection.start().then(function () {
+      console.log('SignalR Connected!');
+    }).catch(function (err) {
+      return console.error(err.toString());
+    });
+    connection.on("BroadcastMessage", () => {
+      this.service.getAllBrands();
+    });
   }
   ngAfterViewInit(): void {
     this.service.dataSource.sort = this.sort;
     this.service.dataSource.paginator = this.paginator;
   }
-  onModalDialog(){
+  onModalDialog() {
     this.service.brand = new Brand()
     this.dialog.open(BrandComponent)
   }
- doFilter = (value: string) => {
-  this.service.dataSource.filter = value.trim().toLocaleLowerCase();
-}
-showToastXoaThanhCong(){
-  this.toastr.success("Xóa thành công")
-}
-showToastXoaThatBai(){
-  this.toastr.error("Xóa thất bại")
-}
-  populateForm(selectedRecord:Brand){
-    this.service.brand = Object.assign({},selectedRecord)
+  doFilter = (value: string) => {
+    this.service.dataSource.filter = value.trim().toLocaleLowerCase();
+  }
+  showToastXoaThanhCong() {
+    this.toastr.success("Xóa thành công")
+  }
+  showToastXoaThatBai() {
+    this.toastr.error("Xóa thất bại")
+  }
+  populateForm(selectedRecord: Brand) {
+    this.service.brand = Object.assign({}, selectedRecord)
     this.dialog.open(BrandComponent)
     console.log(selectedRecord)
+  }
+  clickDelete(id) {
+    if (confirm('Bạn có chắc chắn xóa bản ghi này không ??')) {
+      this.service.delete(id).subscribe(
+        res => {
+          this.service.getAllBrands()
+          this.showToastXoaThanhCong()
+        }
+        , err => {
+          this.showToastXoaThatBai()
+        }
+      )
+    }
+  }
 }
-  clickDelete(id){
-  if(confirm('Bạn có chắc chắn xóa bản ghi này không ??'))
-  {
-    this.service.delete(id).subscribe(
-      res=>{
-        this.service.getAllBrands()
-        this.showToastXoaThanhCong()
-      }
-      ,err=>{
-        this.showToastXoaThatBai()
-      }
-    )
-}
-}}

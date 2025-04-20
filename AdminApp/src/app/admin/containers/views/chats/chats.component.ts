@@ -9,12 +9,12 @@ import { ChatService } from "./chat.service";
   styleUrls: ["./chats.component.scss"],
 })
 export class ChatsComponent implements OnInit {
-  constructor(public service: ChatService) {}
+  constructor(public service: ChatService) { }
   ngOnInit(): void {
     this.service.getallchat()
     const connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
-      .withUrl("https://localhost:44302/notify")
+      .withUrl("https://localhost:5001/notify")
       .build();
     connection
       .start()
@@ -31,8 +31,8 @@ export class ChatsComponent implements OnInit {
       Content: new FormControl(null),
     });
   }
-  checkuse(){
-    var idlocal=localStorage.getItem("idUser")
+  checkuse() {
+    var idlocal = localStorage.getItem("idUser")
     return idlocal
   }
   onSubmit = (data) => {
@@ -40,7 +40,7 @@ export class ChatsComponent implements OnInit {
     formData.append("IdUser", localStorage.getItem("idUser"));
     formData.append("Content", data.Content);
     console.log(formData);
-    this.service.postchat(formData).subscribe(     
+    this.service.postchat(formData).subscribe(
       (res) => {
       }
     );

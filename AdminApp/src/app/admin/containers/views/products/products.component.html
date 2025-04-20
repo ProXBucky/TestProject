@@ -23,7 +23,8 @@
     <ng-container matColumnDef="hinh">
         <th mat-header-cell *matHeaderCellDef mat-sort-header class="make-gold"> Hình </th>
         <td mat-cell *matCellDef="let element">
-            <img src="https://localhost:44302/Images/list-image-product/{{element.image}}" class="rounded mb-3" width="80">
+            <img src="https://localhost:5001/Images/list-image-product/{{element.image}}" class="rounded mb-3"
+                width="80">
         </td>
     </ng-container>
     <ng-container matColumnDef="trangThaiSanPham">
@@ -41,8 +42,10 @@
     <ng-container matColumnDef="trangThaiHoatDong">
         <th mat-header-cell *matHeaderCellDef mat-sort-header class="make-gold"> Hoạt động </th>
         <td mat-cell *matCellDef="let element">
-            <mat-icon *ngIf="element.trangThaiHoatDong==1" style="color: green;" class="active-icon green-600 s-16">check</mat-icon>
-            <mat-icon *ngIf="element.trangThaiHoatDong==0" style="color: red;" class="active-icon red-500 s-16">close</mat-icon>
+            <mat-icon *ngIf="element.trangThaiHoatDong==1" style="color: green;"
+                class="active-icon green-600 s-16">check</mat-icon>
+            <mat-icon *ngIf="element.trangThaiHoatDong==0" style="color: red;"
+                class="active-icon red-500 s-16">close</mat-icon>
         </td>
     </ng-container>
     <ng-container matColumnDef="tenNhanHieu">
@@ -69,7 +72,8 @@
     <ng-container matColumnDef="toggle">
         <th mat-header-cell *matHeaderCellDef class="make-gold"> Ẩn/hiện </th>
         <td mat-cell *matCellDef="let element">
-            <mat-slide-toggle [checked]="element.trangThaiHoatDong" (change)="updateActiveStatus(element)"></mat-slide-toggle>
+            <mat-slide-toggle [checked]="element.trangThaiHoatDong"
+                (change)="updateActiveStatus(element)"></mat-slide-toggle>
         </td>
     </ng-container>
     <ng-container matColumnDef="actions">
